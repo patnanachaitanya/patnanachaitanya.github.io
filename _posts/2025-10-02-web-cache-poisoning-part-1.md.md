@@ -36,6 +36,31 @@ So we change File location of exploit server to this '/resources/js/tracking.js'
 ![img-description](/assets/assets/img/cache1.png)
 
 
+### 2.Web cache poisoning with an unkeyed cookie
+
+First we add a cache buster so that we wouldnt effect any live users in this case we could inject into query parameter
+
+```
+GET /?cb=something1
+```
+Then we should identify if it has cache oracle or not and we could confirm it by 
+these headers in response when we change cache buster
+```
+Cache-Control:max-age=30
+Age: 30
+X-Cache: hit
+```
+Now we have to send it to param miner to get any unkeyed headers.so that we can poison cached data and we identified one
+```
+Identified parameter on 0a5b008504de744181685cf0002f0077.web-security-academy.net:
+fehost,cookie
+```
+After finding parameters let's test whether it is reflecting and it is reflected in response.so i designed a payload the sequence
+```
+"}</script><script>alert(1)</script>{"
+```
+we got xss
+![img-description](/assets/assets/img/cache2.png>)
 ### 3.Web cache poisoning with multiple headers
 
 Here we can add cache buster directly to header
